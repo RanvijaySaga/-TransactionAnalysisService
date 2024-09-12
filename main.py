@@ -1,16 +1,27 @@
-# This is a sample Python script.
+from src.com.abnamro.transactionanalysis.constants import Constants
+from src.com.abnamro.transactionanalysis.service.AccountOverviewService import AccountOverviewService
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+if __name__ == "__main__":
+    # Database configuration for PostgreSQL
+    db_config = {
+        'host': Constants.HOST,
+        'port': Constants.PORT,
+        'dbname': Constants.DATABASE_NAME,
+        'user': Constants.USER_NAME,
+        'password': Constants.PASSWORD
+    }
 
+    # Initialize the account overview service
+    account_service = AccountOverviewService(db_config)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    # Connect to the database
+    account_service.connect()
 
+    # Path to the CSV file
+    csv_file_path = Constants.CSV_FILE_PATH
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    # Insert records from the CSV file into the account_overview table
+    account_service.insert_from_csv(csv_file_path)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # Close the connection to the database
+    account_service.close_connection()
